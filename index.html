@@ -3,83 +3,120 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Buddy Carousel</title>
+  <title>The Buddy System</title>
   <style>
-    :root {
-      color-scheme: light;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:wght@600;700&display=swap');
 
-    * {
+    *, *::before, *::after {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     body {
-      min-height: 100vh;
       margin: 0;
-      background: #f9f9f8;
-      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
-      color: #2f2a27;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: clamp(1.5rem, 4vw, 2.5rem);
-      position: relative;
-      overflow: hidden;
+      padding: clamp(1.5rem, 6vw, 3rem) clamp(1.25rem, 4vw, 2.5rem);
+      background-color: #FFF5C3;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #3E3E3E;
     }
 
     main {
-      width: min(92vw, 480px);
-      max-height: 88vh;
-      aspect-ratio: 9 / 16;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: clamp(1.25rem, 4vw, 1.75rem);
-      box-shadow: 0 18px 40px rgba(41, 36, 32, 0.08);
+      width: min(100%, 420px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(1.75rem, 6vw, 2.75rem);
+    }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+      font-size: clamp(2.25rem, 7vw, 3rem);
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 0.02em;
+      margin: 0;
+      padding: 0.75rem 1.75rem;
+      background-color: #FFFDF6;
+      border-radius: 999px;
+      position: relative;
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    h1::before {
+      content: "";
+      position: absolute;
+      inset: -18px -32px;
+      border-radius: 999px;
+      z-index: -1;
+      background: radial-gradient(circle, rgba(255, 239, 174, 0.65) 0%, rgba(255, 239, 174, 0) 65%);
+      filter: blur(0.5px);
+    }
+
+    .carousel-shell {
+      width: 100%;
+      background-color: #FFFDF6;
+      border-radius: 24px;
+      padding: clamp(3rem, 10vw, 4.25rem) clamp(2rem, 7vw, 3.25rem);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: clamp(1.5rem, 5vw, 2.5rem);
-      backdrop-filter: blur(1px);
-    }
-
-    .carousel-placeholder {
-      width: 100%;
-      height: 100%;
-      border: 2px dashed rgba(63, 55, 50, 0.25);
-      border-radius: inherit;
-      display: grid;
-      place-items: center;
       text-align: center;
-      font-size: clamp(1.4rem, 5vw, 2rem);
-      letter-spacing: 0.04em;
+      font-size: clamp(1.125rem, 4.8vw, 1.5rem);
+      font-weight: 500;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      background: rgba(255, 255, 255, 0.65);
+      color: rgba(62, 62, 62, 0.72);
+      position: relative;
+      box-shadow: 0 22px 45px rgba(62, 62, 62, 0.12);
     }
 
-    .botanical-overlay {
-      position: fixed;
+    .carousel-shell::before {
+      content: "";
+      position: absolute;
+      inset: -24px;
+      border-radius: 32px;
+      background: radial-gradient(circle, rgba(255, 239, 174, 0.7) 0%, rgba(255, 239, 174, 0) 65%);
+      z-index: -1;
+      filter: blur(0.5px);
+    }
+
+    .carousel-shell::after {
+      content: "";
+      position: absolute;
       inset: 0;
-      background: center / cover no-repeat url("oak-hydrangea-frame.png");
+      border-radius: 24px;
+      border: 1px solid rgba(62, 62, 62, 0.08);
       pointer-events: none;
-      z-index: 10;
     }
 
-    @media (min-width: 768px) {
+    @media (max-width: 480px) {
       body {
-        padding: clamp(2rem, 6vw, 3.5rem);
+        padding: 2.5rem 1.25rem;
       }
 
       main {
-        width: min(60vw, 540px);
+        width: min(100%, 360px);
+      }
+
+      h1 {
+        font-size: clamp(2rem, 8vw, 2.5rem);
+      }
+
+      .carousel-shell {
+        padding: 2.75rem 1.75rem;
       }
     }
   </style>
 </head>
 <body>
   <main>
-    <div class="carousel-placeholder" aria-label="Buddy Carousel">Buddy Carousel</div>
+    <h1>The Buddy System</h1>
+    <div class="carousel-shell" role="region" aria-label="App preview carousel placeholder">
+      Carousel goes here
+    </div>
   </main>
-  <div class="botanical-overlay" aria-hidden="true"></div>
 </body>
 </html>
