@@ -158,23 +158,23 @@
       font-size: clamp(4rem, 15vw, 5rem);
     }
 
-    /* Bedside Buddy - Soft Green */
-    .buddy-image.bedside {
+    /* Bedside Buddy (Public) - Soft Green */
+    .buddy-image.bedside-public {
       background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
     }
 
-    .buddy-image.bedside::before {
-      content: "🏥";
+    .buddy-image.bedside-public::before {
+      content: "🛏️";
       font-size: clamp(4rem, 15vw, 5rem);
     }
 
-    /* Beside Buddy - Soft Purple */
-    .buddy-image.beside {
+    /* Bedside Buddy (Nurses) - Soft Purple */
+    .buddy-image.bedside-nurses {
       background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
     }
 
-    .buddy-image.beside::before {
-      content: "💜";
+    .buddy-image.bedside-nurses::before {
+      content: "🩺";
       font-size: clamp(4rem, 15vw, 5rem);
     }
 
@@ -188,6 +188,16 @@
       letter-spacing: -0.01em;
     }
 
+    /* Buddy Subtitle */
+    .buddy-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.9rem, 3.5vw, 1.05rem);
+      font-weight: 400;
+      color: rgba(62, 62, 62, 0.6);
+      text-align: center;
+      margin-top: -0.5rem;
+    }
+
     /* Status Badge */
     .status-badge {
       font-family: 'Inter', sans-serif;
@@ -198,6 +208,8 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-top: 0.5rem;
+      display: inline-block;
+      text-decoration: none;
     }
 
     .status-badge.launch {
@@ -210,6 +222,10 @@
     .status-badge.launch:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(62, 62, 62, 0.3);
+    }
+
+    .status-badge.launch:active {
+      transform: translateY(0px);
     }
 
     .status-badge.coming-soon {
@@ -297,7 +313,7 @@
           <div class="carousel-slide active" data-index="0">
             <div class="buddy-image bride"></div>
             <h2 class="buddy-name">Bride Buddy</h2>
-            <div class="status-badge launch">Click to Launch</div>
+            <a href="https://bridebuddyv2.vercel.app" target="_blank" rel="noopener noreferrer" class="status-badge launch">Click to Launch</a>
           </div>
 
           <!-- Slide 2: Baby Buddy -->
@@ -307,17 +323,19 @@
             <div class="status-badge coming-soon">Coming Soon</div>
           </div>
 
-          <!-- Slide 3: Bedside Buddy -->
+          <!-- Slide 3: Bedside Buddy (Public) -->
           <div class="carousel-slide" data-index="2">
-            <div class="buddy-image bedside"></div>
+            <div class="buddy-image bedside-public"></div>
             <h2 class="buddy-name">Bedside Buddy</h2>
+            <p class="buddy-subtitle">For the Public</p>
             <div class="status-badge coming-soon">Coming Soon</div>
           </div>
 
-          <!-- Slide 4: Beside Buddy -->
+          <!-- Slide 4: Bedside Buddy (Nurses) -->
           <div class="carousel-slide" data-index="3">
-            <div class="buddy-image beside"></div>
-            <h2 class="buddy-name">Beside Buddy</h2>
+            <div class="buddy-image bedside-nurses"></div>
+            <h2 class="buddy-name">Bedside Buddy</h2>
+            <p class="buddy-subtitle">For Nurses</p>
             <div class="status-badge coming-soon">Coming Soon</div>
           </div>
         </div>
@@ -327,8 +345,8 @@
       <div class="carousel-dots" id="carouselDots">
         <button class="dot active" data-index="0" aria-label="Go to Bride Buddy"></button>
         <button class="dot" data-index="1" aria-label="Go to Baby Buddy"></button>
-        <button class="dot" data-index="2" aria-label="Go to Bedside Buddy"></button>
-        <button class="dot" data-index="3" aria-label="Go to Beside Buddy"></button>
+        <button class="dot" data-index="2" aria-label="Go to Bedside Buddy for Public"></button>
+        <button class="dot" data-index="3" aria-label="Go to Bedside Buddy for Nurses"></button>
       </div>
     </div>
   </div>
