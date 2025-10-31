@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Buddy System</title>
+  <style>
+    body { margin: 0; background: #fdf8f2; overflow: hidden; }
+    .scene { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+    .scene img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: auto; }
+    .porch { z-index: 2; }
+    .door { z-index: 3; transform-origin: left center; transition: transform 1.2s ease-in-out; }
+    .open .door { transform: rotateY(-90deg); }
+  </style>
+</head>
+<body>
+  <div class="scene" id="home">
+    <img src="assets/porch.png" class="porch" alt="Porch">
+    <img src="assets/door.png" class="door" alt="Door">
+  </div>
+
+  <script>
+    document.querySelector('.door').addEventListener('click', () => {
+      document.getElementById('home').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
