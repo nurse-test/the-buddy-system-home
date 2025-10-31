@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Buddy System - Your Personalized Companion</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: #FFF5C3;
+      color: #3E3E3E;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5vh 5vw;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(2rem, 5vh, 3rem);
+    }
+
+    /* Header Styles */
+    header {
+      text-align: center;
+      width: 100%;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 8vw, 3rem);
+      font-weight: 700;
+      color: #3E3E3E;
+      margin-bottom: 1rem;
+      letter-spacing: 0.01em;
+    }
+
+    .subtitle {
+      font-size: clamp(0.95rem, 4vw, 1.15rem);
+      color: rgba(62, 62, 62, 0.75);
+      font-weight: 400;
+      line-height: 1.5;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    /* Carousel Container */
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      background-color: #FFFDF6;
+      border-radius: 24px;
+      padding: clamp(2.5rem, 8vw, 4rem) clamp(1.5rem, 5vw, 2.5rem);
+      box-shadow: 0 0 60px #FFEFAE;
+      overflow: hidden;
+    }
+
+    /* Carousel Wrapper */
+    .carousel-wrapper {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: pan-y;
+      user-select: none;
+    }
+
+    /* Carousel Track */
+    .carousel-track {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Carousel Slide */
+    .carousel-slide {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0.3;
+      transform: scale(0.75);
+      pointer-events: none;
+    }
+
+    .carousel-slide.active {
+      opacity: 1;
+      transform: scale(1);
+      z-index: 2;
+      pointer-events: auto;
+    }
+
+    .carousel-slide.prev {
+      transform: translateX(-120%) scale(0.75);
+    }
+
+    .carousel-slide.next {
+      transform: translateX(120%) scale(0.75);
+    }
+
+    /* Buddy Image */
+    .buddy-image {
+      width: clamp(180px, 50vw, 220px);
+      height: clamp(180px, 50vw, 220px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(62, 62, 62, 0.15);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .carousel-slide.active .buddy-image {
+      box-shadow: 0 0 40px rgba(255, 239, 174, 0.8),
+                  0 10px 50px rgba(62, 62, 62, 0.2);
+    }
+
+    /* Bride Buddy - Soft Pink */
+    .buddy-image.bride {
+      background: linear-gradient(135deg, #FFE5E5 0%, #FFD6E8 100%);
+    }
+
+    .buddy-image.bride::before {
+      content: "💍";
+      font-size: clamp(4rem, 15vw, 5rem);
+    }
+
+    /* Baby Buddy - Soft Blue */
+    .buddy-image.baby {
+      background: linear-gradient(135deg, #E3F2FD 0%, #F0E6FF 100%);
+    }
+
+    .buddy-image.baby::before {
+      content: "👶";
+      font-size: clamp(4rem, 15vw, 5rem);
+    }
+
+    /* Bar Buddy - Warm Orange */
+    .buddy-image.bar {
+      background: linear-gradient(135deg, #FFE8D6 0%, #FFDAC1 100%);
+    }
+
+    .buddy-image.bar::before {
+      content: "🍹";
+      font-size: clamp(4rem, 15vw, 5rem);
+    }
+
+    /* Buddy Name */
+    .buddy-name {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.5rem, 5vw, 1.85rem);
+      font-weight: 600;
+      color: #3E3E3E;
+      text-align: center;
+      letter-spacing: -0.01em;
+    }
+
+    /* Navigation Dots */
+    .carousel-dots {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: rgba(62, 62, 62, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      padding: 0;
+    }
+
+    .dot.active {
+      background-color: #3E3E3E;
+      transform: scale(1.3);
+    }
+
+    .dot:hover {
+      background-color: rgba(62, 62, 62, 0.4);
+    }
+
+    /* Mobile Optimization */
+    @media (max-width: 480px) {
+      body {
+        padding: 3vh 4vw;
+      }
+
+      .container {
+        gap: 1.5rem;
+      }
+
+      .carousel-wrapper {
+        height: 340px;
+      }
+
+      .carousel-slide.prev {
+        transform: translateX(-110%) scale(0.7);
+      }
+
+      .carousel-slide.next {
+        transform: translateX(110%) scale(0.7);
+      }
+    }
+
+    /* Aspect Ratio 9:16 Optimization */
+    @media (max-aspect-ratio: 9/16) {
+      .carousel-wrapper {
+        height: 320px;
+      }
+
+      .buddy-image {
+        width: clamp(160px, 45vw, 200px);
+        height: clamp(160px, 45vw, 200px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1>The Buddy System</h1>
+      <p class="subtitle">Your personalized companion for life's transitions.</p>
+    </header>
+
+    <!-- Carousel -->
+    <div class="carousel-container">
+      <div class="carousel-wrapper" id="carouselWrapper">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- Slide 1: Bride Buddy -->
+          <div class="carousel-slide active" data-index="0">
+            <div class="buddy-image bride"></div>
+            <h2 class="buddy-name">Bride Buddy</h2>
+          </div>
+
+          <!-- Slide 2: Baby Buddy -->
+          <div class="carousel-slide next" data-index="1">
+            <div class="buddy-image baby"></div>
+            <h2 class="buddy-name">Baby Buddy</h2>
+          </div>
+
+          <!-- Slide 3: Bar Buddy -->
+          <div class="carousel-slide" data-index="2">
+            <div class="buddy-image bar"></div>
+            <h2 class="buddy-name">Bar Buddy</h2>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Dots -->
+      <div class="carousel-dots" id="carouselDots">
+        <button class="dot active" data-index="0" aria-label="Go to Bride Buddy"></button>
+        <button class="dot" data-index="1" aria-label="Go to Baby Buddy"></button>
+        <button class="dot" data-index="2" aria-label="Go to Bar Buddy"></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Carousel Implementation
+    class Carousel {
+      constructor() {
+        this.currentIndex = 0;
+        this.slides = document.querySelectorAll('.carousel-slide');
+        this.dots = document.querySelectorAll('.dot');
+        this.wrapper = document.getElementById('carouselWrapper');
+        this.totalSlides = this.slides.length;
+        this.autoplayInterval = null;
+        this.touchStartX = 0;
+        this.touchEndX = 0;
+
+        this.init();
+      }
+
+      init() {
+        // Dot navigation
+        this.dots.forEach(dot => {
+          dot.addEventListener('click', (e) => {
+            const index = parseInt(e.target.getAttribute('data-index'));
+            this.goToSlide(index);
+            this.resetAutoplay();
+          });
+        });
+
+        // Touch events for swipe
+        this.wrapper.addEventListener('touchstart', (e) => {
+          this.touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        this.wrapper.addEventListener('touchend', (e) => {
+          this.touchEndX = e.changedTouches[0].screenX;
+          this.handleSwipe();
+        }, { passive: true });
+
+        // Mouse events for desktop swipe
+        let mouseDown = false;
+        let startX = 0;
+
+        this.wrapper.addEventListener('mousedown', (e) => {
+          mouseDown = true;
+          startX = e.pageX;
+          this.wrapper.style.cursor = 'grabbing';
+        });
+
+        this.wrapper.addEventListener('mousemove', (e) => {
+          if (!mouseDown) return;
+          e.preventDefault();
+        });
+
+        this.wrapper.addEventListener('mouseup', (e) => {
+          if (!mouseDown) return;
+          mouseDown = false;
+          this.wrapper.style.cursor = 'grab';
+          const endX = e.pageX;
+          const diff = startX - endX;
+
+          if (Math.abs(diff) > 50) {
+            if (diff > 0) {
+              this.nextSlide();
+            } else {
+              this.prevSlide();
+            }
+            this.resetAutoplay();
+          }
+        });
+
+        this.wrapper.addEventListener('mouseleave', () => {
+          mouseDown = false;
+          this.wrapper.style.cursor = 'grab';
+        });
+
+        // Start autoplay
+        this.startAutoplay();
+      }
+
+      handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = this.touchStartX - this.touchEndX;
+
+        if (Math.abs(diff) > swipeThreshold) {
+          if (diff > 0) {
+            // Swiped left - next slide
+            this.nextSlide();
+          } else {
+            // Swiped right - previous slide
+            this.prevSlide();
+          }
+          this.resetAutoplay();
+        }
+      }
+
+      goToSlide(index) {
+        // Remove all classes
+        this.slides.forEach(slide => {
+          slide.classList.remove('active', 'prev', 'next');
+        });
+
+        this.dots.forEach(dot => {
+          dot.classList.remove('active');
+        });
+
+        // Set current slide
+        this.currentIndex = index;
+        this.slides[this.currentIndex].classList.add('active');
+        this.dots[this.currentIndex].classList.add('active');
+
+        // Set prev and next slides
+        const prevIndex = (this.currentIndex - 1 + this.totalSlides) % this.totalSlides;
+        const nextIndex = (this.currentIndex + 1) % this.totalSlides;
+
+        this.slides[prevIndex].classList.add('prev');
+        this.slides[nextIndex].classList.add('next');
+      }
+
+      nextSlide() {
+        const nextIndex = (this.currentIndex + 1) % this.totalSlides;
+        this.goToSlide(nextIndex);
+      }
+
+      prevSlide() {
+        const prevIndex = (this.currentIndex - 1 + this.totalSlides) % this.totalSlides;
+        this.goToSlide(prevIndex);
+      }
+
+      startAutoplay() {
+        this.autoplayInterval = setInterval(() => {
+          this.nextSlide();
+        }, 3500); // Change slide every 3.5 seconds
+      }
+
+      resetAutoplay() {
+        clearInterval(this.autoplayInterval);
+        this.startAutoplay();
+      }
+
+      stopAutoplay() {
+        clearInterval(this.autoplayInterval);
+      }
+    }
+
+    // Initialize carousel when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        new Carousel();
+      });
+    } else {
+      new Carousel();
+    }
+  </script>
+</body>
+</html>
