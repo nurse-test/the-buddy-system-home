@@ -4,25 +4,55 @@
   <meta charset="utf-8">
   <title>The Buddy System</title>
   <style>
-    body { margin: 0; background: #fdf8f2; overflow: hidden; }
-    .scene { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
-    .scene img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: auto; }
-    .porch { z-index: 2; }
-    .scene {
-  perspective: 1000px; /* this gives the illusion of depth */
-}
+  body {
+    margin: 0;
+    background: #fdf8f2;
+    overflow: hidden;
+  }
 
-.door {
-  z-index: 3;
-  transform-origin: left center; /* hinge on the left side */
-  transform-style: preserve-3d;
-  transition: transform 1.5s ease-in-out;
-}
+  .scene {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    perspective: 1200px; /* gives depth for 3D rotation */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-.open .door {
-  transform: rotateY(-95deg); /* actually swings open */
-}
-  </style>
+  /* keep porch centered and static */
+  .porch {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: 100%;
+    max-height: 100vh;
+    z-index: 1;
+  }
+
+  /* door sits exactly where it belongs */
+  .door {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: 100%;
+    max-height: 100vh;
+    transform-origin: left center; /* this is the hinge */
+    transform-style: preserve-3d;
+    transition: transform 1.8s ease-in-out;
+    z-index: 2;
+  }
+
+  /* smooth realistic swing */
+  .open .door {
+    transform: translate(-50%, -50%) rotateY(-100deg);
+  }
+</style>
 </head>
 <body>
   <div class="scene" id="home">
