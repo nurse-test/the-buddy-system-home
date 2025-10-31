@@ -8,8 +8,20 @@
     .scene { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
     .scene img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: auto; }
     .porch { z-index: 2; }
-    .door { z-index: 3; transform-origin: left center; transition: transform 1.2s ease-in-out; }
-    .open .door { transform: rotateY(-90deg); }
+    .scene {
+  perspective: 1000px; /* this gives the illusion of depth */
+}
+
+.door {
+  z-index: 3;
+  transform-origin: left center; /* hinge on the left side */
+  transform-style: preserve-3d;
+  transition: transform 1.5s ease-in-out;
+}
+
+.open .door {
+  transform: rotateY(-95deg); /* actually swings open */
+}
   </style>
 </head>
 <body>
