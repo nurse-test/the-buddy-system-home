@@ -208,6 +208,8 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-top: 0.5rem;
+      display: inline-block;
+      text-decoration: none;
     }
 
     .status-badge.launch {
@@ -220,6 +222,10 @@
     .status-badge.launch:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(62, 62, 62, 0.3);
+    }
+
+    .status-badge.launch:active {
+      transform: translateY(0px);
     }
 
     .status-badge.coming-soon {
@@ -307,7 +313,7 @@
           <div class="carousel-slide active" data-index="0">
             <div class="buddy-image bride"></div>
             <h2 class="buddy-name">Bride Buddy</h2>
-            <div class="status-badge launch">Click to Launch</div>
+            <a href="https://bridebuddyv2.vercel.app" target="_blank" rel="noopener noreferrer" class="status-badge launch">Click to Launch</a>
           </div>
 
           <!-- Slide 2: Baby Buddy -->
