@@ -73,7 +73,7 @@
     .carousel-wrapper {
       position: relative;
       width: 100%;
-      height: 380px;
+      height: 420px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -140,14 +140,12 @@
                   0 10px 50px rgba(62, 62, 62, 0.2);
     }
 
-    /* Bride Buddy - Soft Pink */
+    /* Bride Buddy - Official Logo */
     .buddy-image.bride {
-      background: linear-gradient(135deg, #FFE5E5 0%, #FFD6E8 100%);
-    }
-
-    .buddy-image.bride::before {
-      content: "💍";
-      font-size: clamp(4rem, 15vw, 5rem);
+      background-image: url('official-logo.png');
+      background-size: cover;
+      background-position: center;
+      background-color: #FFF5C3;
     }
 
     /* Baby Buddy - Soft Blue */
@@ -160,13 +158,23 @@
       font-size: clamp(4rem, 15vw, 5rem);
     }
 
-    /* Bar Buddy - Warm Orange */
-    .buddy-image.bar {
-      background: linear-gradient(135deg, #FFE8D6 0%, #FFDAC1 100%);
+    /* Bedside Buddy - Soft Green */
+    .buddy-image.bedside {
+      background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
     }
 
-    .buddy-image.bar::before {
-      content: "🍹";
+    .buddy-image.bedside::before {
+      content: "🏥";
+      font-size: clamp(4rem, 15vw, 5rem);
+    }
+
+    /* Beside Buddy - Soft Purple */
+    .buddy-image.beside {
+      background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
+    }
+
+    .buddy-image.beside::before {
+      content: "💜";
       font-size: clamp(4rem, 15vw, 5rem);
     }
 
@@ -178,6 +186,35 @@
       color: #3E3E3E;
       text-align: center;
       letter-spacing: -0.01em;
+    }
+
+    /* Status Badge */
+    .status-badge {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.85rem, 3.5vw, 1rem);
+      font-weight: 500;
+      padding: 0.5rem 1.25rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.5rem;
+    }
+
+    .status-badge.launch {
+      background-color: #3E3E3E;
+      color: #FFF5C3;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .status-badge.launch:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(62, 62, 62, 0.3);
+    }
+
+    .status-badge.coming-soon {
+      background-color: rgba(62, 62, 62, 0.1);
+      color: rgba(62, 62, 62, 0.6);
     }
 
     /* Navigation Dots */
@@ -219,7 +256,7 @@
       }
 
       .carousel-wrapper {
-        height: 340px;
+        height: 380px;
       }
 
       .carousel-slide.prev {
@@ -234,7 +271,7 @@
     /* Aspect Ratio 9:16 Optimization */
     @media (max-aspect-ratio: 9/16) {
       .carousel-wrapper {
-        height: 320px;
+        height: 360px;
       }
 
       .buddy-image {
@@ -260,18 +297,28 @@
           <div class="carousel-slide active" data-index="0">
             <div class="buddy-image bride"></div>
             <h2 class="buddy-name">Bride Buddy</h2>
+            <div class="status-badge launch">Click to Launch</div>
           </div>
 
           <!-- Slide 2: Baby Buddy -->
           <div class="carousel-slide next" data-index="1">
             <div class="buddy-image baby"></div>
             <h2 class="buddy-name">Baby Buddy</h2>
+            <div class="status-badge coming-soon">Coming Soon</div>
           </div>
 
-          <!-- Slide 3: Bar Buddy -->
+          <!-- Slide 3: Bedside Buddy -->
           <div class="carousel-slide" data-index="2">
-            <div class="buddy-image bar"></div>
-            <h2 class="buddy-name">Bar Buddy</h2>
+            <div class="buddy-image bedside"></div>
+            <h2 class="buddy-name">Bedside Buddy</h2>
+            <div class="status-badge coming-soon">Coming Soon</div>
+          </div>
+
+          <!-- Slide 4: Beside Buddy -->
+          <div class="carousel-slide" data-index="3">
+            <div class="buddy-image beside"></div>
+            <h2 class="buddy-name">Beside Buddy</h2>
+            <div class="status-badge coming-soon">Coming Soon</div>
           </div>
         </div>
       </div>
@@ -280,7 +327,8 @@
       <div class="carousel-dots" id="carouselDots">
         <button class="dot active" data-index="0" aria-label="Go to Bride Buddy"></button>
         <button class="dot" data-index="1" aria-label="Go to Baby Buddy"></button>
-        <button class="dot" data-index="2" aria-label="Go to Bar Buddy"></button>
+        <button class="dot" data-index="2" aria-label="Go to Bedside Buddy"></button>
+        <button class="dot" data-index="3" aria-label="Go to Beside Buddy"></button>
       </div>
     </div>
   </div>
