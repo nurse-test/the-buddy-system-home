@@ -2,67 +2,557 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Buddy System</title>
   <style>
-  body {
-    margin: 0;
-    background: #fdf8f2;
-    overflow: hidden;
-  }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap');
 
-  .scene {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    perspective: 1200px; /* gives depth for 3D rotation */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+    :root {
+      --butter: #fdf4da;
+      --butter-deep: #f7dba1;
+      --cream: #fffaf1;
+      --fern: #7ca486;
+      --fern-dark: #4f755b;
+      --hydrangea: #d8c0df;
+      --moss: #b4c8a8;
+      --rose: #f2d2d4;
+      --text: #2A2623;
+      --shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
 
-  /* keep porch centered and static */
-  .porch {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: auto;
-    height: 100%;
-    max-height: 100vh;
-    z-index: 1;
-  }
+    * {
+      box-sizing: border-box;
+    }
 
-  /* door sits exactly where it belongs */
-  .door {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: auto;
-    height: 100%;
-    transform-origin: right center; /* this is the hinge */
-    transform-style: preserve-3d;
-    transition: transform 1.8s ease-in-out;
-    z-index: 2;
-  }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(120% 120% at 50% 10%, #fff6e4 0%, var(--butter) 50%, var(--butter-deep) 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-  /* smooth realistic swing */
-  .open .door {
-    transform: translate(-50%, -50%) rotateY(100deg);
-  }
-</style>
+    .parallax-scene {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      perspective: 1200px;
+      overflow: hidden;
+    }
+
+    .botanical-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      transform-style: preserve-3d;
+      transition: transform 0.4s ease;
+    }
+
+    .botanical-layer::before,
+    .botanical-layer::after {
+      content: "";
+      position: absolute;
+      background-repeat: no-repeat;
+      background-size: contain;
+      opacity: 0.45;
+    }
+
+    .botanical--branches::before {
+      top: -8vh;
+      right: -6vw;
+      width: 45vw;
+      height: 45vw;
+      background-image: radial-gradient(circle at 60% 40%, rgba(79, 117, 91, 0.55) 0%, rgba(79, 117, 91, 0) 60%),
+        conic-gradient(from 180deg at 40% 50%, rgba(42, 38, 35, 0.35) 0deg, rgba(42, 38, 35, 0.02) 90deg, rgba(42, 38, 35, 0.3) 180deg, rgba(42, 38, 35, 0.05) 270deg, rgba(42, 38, 35, 0.35) 360deg);
+      filter: blur(1px);
+      animation: sway-long 12s ease-in-out infinite;
+    }
+
+    .botanical--branches::after {
+      bottom: 15vh;
+      left: -10vw;
+      width: 40vw;
+      height: 40vw;
+      background-image: radial-gradient(circle at 30% 30%, rgba(176, 198, 154, 0.6) 0%, rgba(176, 198, 154, 0) 65%),
+        conic-gradient(from 240deg at 50% 50%, rgba(79, 117, 91, 0.5) 0deg, rgba(79, 117, 91, 0) 180deg);
+      filter: blur(2px);
+      animation: sway-medium 10s ease-in-out infinite;
+    }
+
+    .botanical--hydrangea::before {
+      bottom: -12vh;
+      left: -10vw;
+      width: 38vw;
+      height: 38vw;
+      background-image: radial-gradient(circle at 55% 45%, rgba(216, 192, 223, 0.9) 0%, rgba(216, 192, 223, 0.3) 45%, rgba(216, 192, 223, 0) 75%),
+        radial-gradient(circle at 25% 60%, rgba(242, 210, 212, 0.8) 0%, rgba(242, 210, 212, 0) 65%);
+      filter: blur(0.5px);
+      animation: sway-medium 8s ease-in-out infinite;
+    }
+
+    .botanical--hydrangea::after {
+      top: 25vh;
+      left: -6vw;
+      width: 24vw;
+      height: 24vw;
+      background-image: radial-gradient(circle at 50% 50%, rgba(124, 164, 134, 0.7) 0%, rgba(124, 164, 134, 0) 65%);
+      filter: blur(4px);
+      animation: sway-short 6s ease-in-out infinite;
+    }
+
+    .botanical--fern::before {
+      bottom: -6vh;
+      right: -10vw;
+      width: 45vw;
+      height: 45vw;
+      background-image: radial-gradient(circle at 45% 60%, rgba(79, 117, 91, 0.8) 0%, rgba(79, 117, 91, 0.1) 60%, rgba(79, 117, 91, 0) 75%),
+        radial-gradient(circle at 70% 40%, rgba(122, 164, 134, 0.5) 0%, rgba(122, 164, 134, 0) 70%);
+      filter: blur(0.5px);
+      animation: sway-long 14s ease-in-out infinite;
+    }
+
+    .botanical--fern::after {
+      top: 55vh;
+      right: 10vw;
+      width: 18vw;
+      height: 18vw;
+      background-image: radial-gradient(circle at 50% 50%, rgba(242, 210, 212, 0.65) 0%, rgba(242, 210, 212, 0) 70%);
+      filter: blur(2px);
+      animation: sway-short 7s ease-in-out infinite;
+    }
+
+    .botanical--moss::before {
+      top: -4vh;
+      left: 18vw;
+      width: 50vw;
+      height: 20vh;
+      background-image: linear-gradient(120deg, rgba(180, 200, 168, 0.4) 0%, rgba(180, 200, 168, 0) 65%);
+      filter: blur(1.5px);
+      animation: drift 9s ease-in-out infinite;
+    }
+
+    .botanical--moss::after {
+      top: 6vh;
+      right: 22vw;
+      width: 42vw;
+      height: 16vh;
+      background-image: linear-gradient(80deg, rgba(124, 164, 134, 0.35) 0%, rgba(124, 164, 134, 0.05) 75%);
+      filter: blur(1px);
+      animation: drift 11s ease-in-out infinite;
+    }
+
+    main {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 7vh 6vw 10vh;
+      text-align: center;
+      transform-style: preserve-3d;
+    }
+
+    header.hero {
+      max-width: 720px;
+      margin-bottom: 3rem;
+    }
+
+    header.hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      margin: 0 0 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    header.hero p {
+      margin: 0;
+      font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+      line-height: 1.6;
+    }
+
+    .carousel-section {
+      width: min(100%, 880px);
+      position: relative;
+      padding: 2rem 0;
+    }
+
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      background: linear-gradient(160deg, rgba(255, 250, 241, 0.92), rgba(255, 243, 224, 0.88));
+      padding: 2.4rem 1.6rem;
+      box-shadow: 0 18px 50px rgba(42, 38, 35, 0.12);
+      backdrop-filter: blur(6px);
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 1.5rem;
+      transform: translateX(0%);
+      transition: transform 0.7s ease;
+      will-change: transform;
+    }
+
+    .carousel-card {
+      flex: 0 0 100%;
+      background: var(--cream);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      box-shadow: var(--shadow);
+      position: relative;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 260px;
+      transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.6s ease;
+      opacity: 0.65;
+    }
+
+    .carousel-card[data-active="true"] {
+      opacity: 1;
+      transform: scale(1.02) translateZ(30px);
+      box-shadow: 0 20px 45px rgba(42, 38, 35, 0.16);
+    }
+
+    .buddy-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.75rem, 3.2vw, 2.2rem);
+      margin: 0 0 0.4rem;
+    }
+
+    .buddy-tagline {
+      margin: 0 0 1.2rem;
+      font-weight: 600;
+      color: var(--fern-dark);
+      font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+    }
+
+    .buddy-description {
+      margin: 0 0 2rem;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .buddy-button {
+      align-self: flex-start;
+      padding: 0.85rem 1.8rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(120deg, var(--fern) 0%, var(--fern-dark) 100%);
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .buddy-button:hover,
+    .buddy-button:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(79, 117, 91, 0.3);
+    }
+
+    .carousel-nav {
+      position: absolute;
+      inset-block: 50%;
+      translate: 0 -50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .carousel-button {
+      background: rgba(255, 250, 241, 0.8);
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      pointer-events: auto;
+      transition: transform 0.3s ease, background 0.3s ease;
+      color: var(--text);
+      font-size: 1.5rem;
+    }
+
+    .carousel-button:hover,
+    .carousel-button:focus-visible {
+      transform: translateY(-2px);
+      background: rgba(255, 243, 224, 0.95);
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .carousel-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(42, 38, 35, 0.25);
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
+      padding: 0;
+    }
+
+    .carousel-dot[aria-current="true"] {
+      background: var(--fern-dark);
+      transform: scale(1.2);
+    }
+
+    footer {
+      margin-top: 4rem;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(42, 38, 35, 0.6);
+    }
+
+    @keyframes sway-short {
+      0%, 100% { transform: rotate(-1.5deg) translateY(0px); }
+      50% { transform: rotate(1.5deg) translateY(5px); }
+    }
+
+    @keyframes sway-medium {
+      0%, 100% { transform: rotate(-2.5deg) translateY(0px); }
+      50% { transform: rotate(2.5deg) translateY(9px); }
+    }
+
+    @keyframes sway-long {
+      0%, 100% { transform: rotate(-3deg) translateY(-2px); }
+      50% { transform: rotate(3deg) translateY(12px); }
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translateY(0px) skewX(0deg); }
+      50% { transform: translateY(10px) skewX(2deg); }
+    }
+
+    @media (max-width: 768px) {
+      header.hero {
+        margin-bottom: 2.5rem;
+      }
+
+      .carousel {
+        padding: 2rem 1.2rem;
+      }
+
+      .carousel-card {
+        padding: 2rem 1.6rem;
+        min-height: 230px;
+      }
+
+      .carousel-button {
+        width: 42px;
+        height: 42px;
+        font-size: 1.3rem;
+      }
+    }
+
+    @media (max-width: 560px) {
+      main {
+        padding: 6vh 1.5rem 12vh;
+      }
+
+      .carousel {
+        border-radius: 20px;
+      }
+
+      .carousel-track {
+        gap: 1rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="scene" id="home">
-    <img src="assets/frontporch.png" class="porch" alt="Porch">
-    <img src="assets/door.png" class="door" alt="Door">
+  <div class="parallax-scene">
+    <div class="botanical-layer botanical--branches" data-depth="0.1" aria-hidden="true"></div>
+    <div class="botanical-layer botanical--hydrangea" data-depth="0.25" aria-hidden="true"></div>
+    <div class="botanical-layer botanical--fern" data-depth="0.2" aria-hidden="true"></div>
+    <div class="botanical-layer botanical--moss" data-depth="0.15" aria-hidden="true"></div>
+
+    <main data-depth="0.4">
+      <header class="hero">
+        <h1>Welcome to The Buddy System.</h1>
+        <p>AI companions that offer emotional scaffolding for life’s biggest (and smallest) moments.</p>
+      </header>
+
+      <section class="carousel-section" aria-label="Meet the Buddies">
+        <div class="carousel" role="group">
+          <div class="carousel-nav" aria-hidden="true">
+            <button class="carousel-button" type="button" data-direction="prev" aria-label="Previous buddy">&#10094;</button>
+            <button class="carousel-button" type="button" data-direction="next" aria-label="Next buddy">&#10095;</button>
+          </div>
+          <div class="carousel-track" data-carousel-track>
+            <article class="carousel-card" data-index="0">
+              <h2 class="buddy-title">Bride Buddy</h2>
+              <p class="buddy-tagline">For when forever starts with overwhelm.</p>
+              <p class="buddy-description">Your AI wedding planner for the day you’ve dreamed of—without the stress you didn’t sign up for.</p>
+              <a class="buddy-button" href="https://bridebuddyv2.vercel.app" target="_blank" rel="noreferrer">Start Planning</a>
+            </article>
+            <article class="carousel-card" data-index="1">
+              <h2 class="buddy-title">Baby Buddy</h2>
+              <p class="buddy-tagline">For growing your family, not losing yourself.</p>
+              <p class="buddy-description">Pregnancy and postpartum support that actually understands what you’re going through.</p>
+            </article>
+            <article class="carousel-card" data-index="2">
+              <h2 class="buddy-title">Bedside Buddy for Nurses</h2>
+              <p class="buddy-tagline">For healers who need support too.</p>
+              <p class="buddy-description">Documentation help for nurses drowning in paperwork instead of patient care.</p>
+            </article>
+            <article class="carousel-card" data-index="3">
+              <h2 class="buddy-title">Bedside Buddy for Patients &amp; Families</h2>
+              <p class="buddy-tagline">For navigating the scariest moments with clarity.</p>
+              <p class="buddy-description">Your advocate when you’re overwhelmed and don’t know what questions to ask.</p>
+            </article>
+          </div>
+          <div class="carousel-dots" role="tablist" aria-label="Select Buddy"></div>
+        </div>
+      </section>
+
+      <footer>
+        Built with intention.
+      </footer>
+    </main>
   </div>
 
   <script>
-    document.querySelector('.door').addEventListener('click', () => {
-      document.getElementById('home').classList.toggle('open');
-    });
+    (function() {
+      const scene = document.querySelector('.parallax-scene');
+      const layers = Array.from(document.querySelectorAll('[data-depth]'));
+      const track = document.querySelector('[data-carousel-track]');
+      const cards = Array.from(track.children);
+      const prevButton = document.querySelector('[data-direction="prev"]');
+      const nextButton = document.querySelector('[data-direction="next"]');
+      const dotsContainer = document.querySelector('.carousel-dots');
+      let currentIndex = 0;
+      let isPointerDown = false;
+      let startX = 0;
+
+      const createDots = () => {
+        cards.forEach((_, index) => {
+          const dot = document.createElement('button');
+          dot.className = 'carousel-dot';
+          dot.type = 'button';
+          dot.setAttribute('aria-label', `Show ${cards[index].querySelector('.buddy-title').textContent}`);
+          dot.dataset.index = index;
+          dot.addEventListener('click', () => moveTo(index));
+          dotsContainer.appendChild(dot);
+        });
+      };
+
+      const updateDots = () => {
+        dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, index) => {
+          dot.setAttribute('aria-current', String(index === currentIndex));
+        });
+      };
+
+      const updateCards = () => {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        cards.forEach((card, index) => {
+          card.dataset.active = String(index === currentIndex);
+        });
+        updateDots();
+      };
+
+      const moveTo = (index) => {
+        currentIndex = (index + cards.length) % cards.length;
+        updateCards();
+      };
+
+      const moveNext = () => moveTo(currentIndex + 1);
+      const movePrev = () => moveTo(currentIndex - 1);
+
+      const handleParallax = (event) => {
+        const rect = scene.getBoundingClientRect();
+        const x = (event.clientX ?? (event.touches ? event.touches[0].clientX : rect.left)) - rect.left;
+        const y = (event.clientY ?? (event.touches ? event.touches[0].clientY : rect.top)) - rect.top;
+        const relativeX = (x / rect.width) * 2 - 1;
+        const relativeY = (y / rect.height) * 2 - 1;
+
+        layers.forEach(layer => {
+          const depth = parseFloat(layer.dataset.depth);
+          const translateX = relativeX * depth * -20;
+          const translateY = relativeY * depth * -16;
+          layer.style.transform = `translate3d(${translateX}px, ${translateY}px, 0)`;
+        });
+      };
+
+      const startDrag = (clientX) => {
+        isPointerDown = true;
+        startX = clientX;
+        track.style.transition = 'none';
+      };
+
+      const moveDrag = (clientX) => {
+        if (!isPointerDown) return;
+        const delta = clientX - startX;
+        const containerWidth = track.parentElement.clientWidth;
+        const percentage = (delta / containerWidth) * 100;
+        track.style.transform = `translateX(calc(-${currentIndex * 100}% + ${percentage}%))`;
+      };
+
+      const endDrag = (clientX) => {
+        if (!isPointerDown) return;
+        const delta = clientX - startX;
+        const containerWidth = track.parentElement.clientWidth;
+        track.style.transition = '';
+        if (Math.abs(delta) > containerWidth * 0.15) {
+          delta < 0 ? moveNext() : movePrev();
+        } else {
+          updateCards();
+        }
+        isPointerDown = false;
+      };
+
+      prevButton.addEventListener('click', movePrev);
+      nextButton.addEventListener('click', moveNext);
+
+      track.addEventListener('pointerdown', (event) => {
+        startDrag(event.clientX);
+        track.setPointerCapture(event.pointerId);
+      });
+
+      track.addEventListener('pointermove', (event) => moveDrag(event.clientX));
+      track.addEventListener('pointerup', (event) => {
+        track.releasePointerCapture(event.pointerId);
+        endDrag(event.clientX);
+      });
+      track.addEventListener('pointercancel', () => {
+        isPointerDown = false;
+        updateCards();
+      });
+
+      track.addEventListener('touchstart', (event) => startDrag(event.touches[0].clientX), { passive: true });
+      track.addEventListener('touchmove', (event) => moveDrag(event.touches[0].clientX), { passive: true });
+      track.addEventListener('touchend', (event) => endDrag(event.changedTouches[0].clientX));
+
+      scene.addEventListener('pointermove', handleParallax);
+      scene.addEventListener('touchmove', handleParallax, { passive: true });
+
+      createDots();
+      moveTo(0);
+    })();
   </script>
 </body>
 </html>
