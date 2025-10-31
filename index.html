@@ -2,67 +2,296 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>The Buddy System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Buddy System — Botanical Frame</title>
   <style>
-  body {
-    margin: 0;
-    background: #fdf8f2;
-    overflow: hidden;
-  }
+    :root {
+      color-scheme: light;
+    }
 
-  .scene {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    perspective: 1200px; /* gives depth for 3D rotation */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  /* keep porch centered and static */
-  .porch {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: auto;
-    height: 100%;
-    max-height: 100vh;
-    z-index: 1;
-  }
+    body {
+      font-family: "Inter", "Segoe UI", sans-serif;
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 15%, rgba(245, 249, 246, 0.95) 0%, rgba(229, 240, 235, 0.85) 45%, rgba(203, 222, 214, 0.8) 100%),
+        linear-gradient(180deg, #f5f7f6 0%, #e1ebea 40%, #d2e2dd 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6vh 6vw;
+      color: #2a2623;
+    }
 
-  /* door sits exactly where it belongs */
-  .door {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: auto;
-    height: 100%;
-    transform-origin: right center; /* this is the hinge */
-    transform-style: preserve-3d;
-    transition: transform 1.8s ease-in-out;
-    z-index: 2;
-  }
+    .scene {
+      position: relative;
+      width: min(100%, 540px);
+      min-height: 80vh;
+      border-radius: 28px;
+      overflow: hidden;
+      padding: 8vh 5vw 10vh;
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow: 0 20px 45px rgba(42, 38, 35, 0.08);
+    }
 
-  /* smooth realistic swing */
-  .open .door {
-    transform: translate(-50%, -50%) rotateY(100deg);
-  }
-</style>
+    .scene::before {
+      content: "";
+      position: absolute;
+      inset: 2rem;
+      border-radius: 24px;
+      background: radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
+      pointer-events: none;
+    }
+
+    .content {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      gap: 1rem;
+      padding: 4vh 4vw;
+    }
+
+    h1 {
+      font-family: "Playfair Display", "Times New Roman", serif;
+      font-size: clamp(2rem, 7vw, 2.75rem);
+      letter-spacing: 0.02em;
+    }
+
+    p {
+      font-size: clamp(1rem, 4vw, 1.2rem);
+      line-height: 1.5;
+      max-width: 22ch;
+      color: rgba(42, 38, 35, 0.8);
+    }
+
+    .botanical {
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .oak-branch {
+      width: 70vw;
+      max-width: 420px;
+      filter: drop-shadow(0 15px 25px rgba(37, 60, 50, 0.15));
+    }
+
+    .oak-branch--left {
+      top: -6vh;
+      left: -18vw;
+      transform: rotate(-6deg);
+    }
+
+    .oak-branch--right {
+      top: -4vh;
+      right: -16vw;
+      transform: scaleX(-1) rotate(-2deg);
+    }
+
+    .moss {
+      transform-origin: 50% 0%;
+      animation: moss-sway 9s ease-in-out infinite;
+    }
+
+    .hydrangea {
+      bottom: -4vh;
+      left: -12vw;
+      width: 60vw;
+      max-width: 360px;
+      filter: drop-shadow(0 12px 24px rgba(82, 102, 84, 0.2));
+    }
+
+    .hydrangea--right {
+      left: auto;
+      right: -10vw;
+      transform: scaleX(-1);
+    }
+
+    .fern {
+      bottom: -6vh;
+      width: 55vw;
+      max-width: 320px;
+      transform-origin: 50% 100%;
+      animation: fern-breathe 10s ease-in-out infinite;
+      filter: drop-shadow(0 10px 20px rgba(42, 38, 35, 0.15));
+    }
+
+    .fern--left {
+      left: -10vw;
+    }
+
+    .fern--right {
+      right: -8vw;
+      transform: scaleX(-1);
+    }
+
+    @keyframes moss-sway {
+      0%, 100% {
+        transform: rotate(2deg) translateX(0);
+      }
+      50% {
+        transform: rotate(-3deg) translateX(1.5%);
+      }
+    }
+
+    @keyframes fern-breathe {
+      0%, 100% {
+        transform: scale(1) translateY(0);
+      }
+      50% {
+        transform: scale(1.04) translateY(0.6rem);
+      }
+    }
+
+    @media (min-width: 720px) {
+      body {
+        padding: 8vh;
+      }
+      .scene {
+        width: min(85vw, 720px);
+        padding: 9vh 6vw 12vh;
+      }
+      .oak-branch {
+        width: 48vw;
+      }
+      .hydrangea {
+        width: 36vw;
+      }
+      .fern {
+        width: 32vw;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="scene" id="home">
-    <img src="assets/frontporch.png" class="porch" alt="Porch">
-    <img src="assets/door.png" class="door" alt="Door">
-  </div>
+  <div class="scene">
+    <svg class="botanical oak-branch oak-branch--left" viewBox="0 0 320 220" aria-hidden="true">
+      <g fill="none" stroke="rgba(58, 85, 65, 0.7)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 40 C90 20, 140 18, 210 40"/>
+        <path d="M60 70 C120 62, 180 70, 250 98"/>
+        <path d="M110 110 C180 118, 240 132, 300 170"/>
+      </g>
+      <g fill="#8a9f7a" opacity="0.5">
+        <ellipse cx="90" cy="46" rx="14" ry="10"/>
+        <ellipse cx="140" cy="42" rx="11" ry="8"/>
+        <ellipse cx="190" cy="48" rx="13" ry="10"/>
+        <ellipse cx="240" cy="66" rx="16" ry="12"/>
+      </g>
+      <g class="moss" fill="#c2d5b7" opacity="0.85">
+        <path d="M120 52 q6 30 -4 70 q8 32 -6 64"/>
+        <path d="M176 56 q8 32 -2 68 q6 30 -8 66"/>
+        <path d="M228 68 q10 34 0 72 q8 28 -10 64"/>
+      </g>
+    </svg>
 
-  <script>
-    document.querySelector('.door').addEventListener('click', () => {
-      document.getElementById('home').classList.toggle('open');
-    });
-  </script>
+    <svg class="botanical oak-branch oak-branch--right" viewBox="0 0 320 220" aria-hidden="true">
+      <g fill="none" stroke="rgba(58, 85, 65, 0.7)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 42 C90 22, 150 20, 220 46"/>
+        <path d="M70 76 C140 68, 200 78, 280 110"/>
+        <path d="M120 118 C200 128, 250 150, 310 190"/>
+      </g>
+      <g fill="#8a9f7a" opacity="0.5">
+        <ellipse cx="95" cy="48" rx="16" ry="11"/>
+        <ellipse cx="150" cy="44" rx="12" ry="9"/>
+        <ellipse cx="205" cy="50" rx="15" ry="11"/>
+        <ellipse cx="255" cy="68" rx="18" ry="13"/>
+      </g>
+      <g class="moss" fill="#c2d5b7" opacity="0.85">
+        <path d="M130 54 q6 32 -6 74 q10 34 -6 68"/>
+        <path d="M188 58 q8 34 -2 72 q8 32 -8 68"/>
+        <path d="M240 70 q12 36 0 76 q10 30 -12 68"/>
+      </g>
+    </svg>
+
+    <svg class="botanical hydrangea" viewBox="0 0 320 180" aria-hidden="true">
+      <defs>
+        <radialGradient id="petalGradient" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#f6f2ff"/>
+          <stop offset="60%" stop-color="#c9d3f3"/>
+          <stop offset="100%" stop-color="#a8bfdc"/>
+        </radialGradient>
+        <radialGradient id="leafGradient" cx="50%" cy="50%" r="60%">
+          <stop offset="0%" stop-color="#6f8f72"/>
+          <stop offset="100%" stop-color="#3e6047"/>
+        </radialGradient>
+      </defs>
+      <g>
+        <path d="M14 150 C60 120, 100 120, 150 150 C90 170, 50 170, 14 150 Z" fill="url(#leafGradient)" opacity="0.9"/>
+        <path d="M100 160 C150 126, 210 126, 268 158 C210 178, 150 180, 100 160 Z" fill="url(#leafGradient)" opacity="0.85"/>
+      </g>
+      <g opacity="0.92" fill="url(#petalGradient)">
+        <circle cx="80" cy="120" r="26"/>
+        <circle cx="120" cy="108" r="24"/>
+        <circle cx="160" cy="126" r="28"/>
+        <circle cx="210" cy="114" r="26"/>
+        <circle cx="250" cy="128" r="24"/>
+      </g>
+    </svg>
+
+    <svg class="botanical hydrangea hydrangea--right" viewBox="0 0 320 180" aria-hidden="true">
+      <defs>
+        <radialGradient id="petalGradientRight" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#f6f2ff"/>
+          <stop offset="60%" stop-color="#c9d3f3"/>
+          <stop offset="100%" stop-color="#a8bfdc"/>
+        </radialGradient>
+        <radialGradient id="leafGradientRight" cx="50%" cy="50%" r="60%">
+          <stop offset="0%" stop-color="#6f8f72"/>
+          <stop offset="100%" stop-color="#3e6047"/>
+        </radialGradient>
+      </defs>
+      <g>
+        <path d="M14 150 C60 120, 100 120, 150 150 C90 170, 50 170, 14 150 Z" fill="url(#leafGradientRight)" opacity="0.9"/>
+        <path d="M100 160 C150 126, 210 126, 268 158 C210 178, 150 180, 100 160 Z" fill="url(#leafGradientRight)" opacity="0.85"/>
+      </g>
+      <g opacity="0.92" fill="url(#petalGradientRight)">
+        <circle cx="80" cy="120" r="26"/>
+        <circle cx="120" cy="108" r="24"/>
+        <circle cx="160" cy="126" r="28"/>
+        <circle cx="210" cy="114" r="26"/>
+        <circle cx="250" cy="128" r="24"/>
+      </g>
+    </svg>
+
+    <svg class="botanical fern fern--left" viewBox="0 0 280 200" aria-hidden="true">
+      <defs>
+        <linearGradient id="fernBlade" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#5f8d68"/>
+          <stop offset="100%" stop-color="#33503d"/>
+        </linearGradient>
+      </defs>
+      <path d="M140 20 C120 80, 110 150, 120 200" fill="none" stroke="url(#fernBlade)" stroke-width="12" stroke-linecap="round" opacity="0.75"/>
+      <g fill="url(#fernBlade)" opacity="0.85">
+        <path d="M120 44 C70 52, 40 68, 12 96 Q70 80, 118 70 Z"/>
+        <path d="M132 70 C78 80, 44 100, 20 134 Q78 110, 130 100 Z"/>
+        <path d="M142 104 C94 118, 60 140, 36 170 Q96 144, 140 132 Z"/>
+      </g>
+    </svg>
+
+    <svg class="botanical fern fern--right" viewBox="0 0 280 200" aria-hidden="true">
+      <defs>
+        <linearGradient id="fernBladeRight" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#608f6a"/>
+          <stop offset="100%" stop-color="#2f4d3a"/>
+        </linearGradient>
+      </defs>
+      <path d="M140 20 C160 86, 170 152, 160 200" fill="none" stroke="url(#fernBladeRight)" stroke-width="12" stroke-linecap="round" opacity="0.75"/>
+      <g fill="url(#fernBladeRight)" opacity="0.85">
+        <path d="M160 46 C210 56, 244 72, 268 100 Q210 84, 162 74 Z"/>
+        <path d="M148 74 C202 84, 236 106, 260 140 Q202 114, 150 104 Z"/>
+        <path d="M138 108 C186 122, 220 146, 244 176 Q184 150, 140 138 Z"/>
+      </g>
+    </svg>
+
+    <div class="content">
+      <h1>Meet Your Buddy</h1>
+      <p>A calm, sunlit space reserved for your carousel or hero content.</p>
+    </div>
+  </div>
 </body>
 </html>
